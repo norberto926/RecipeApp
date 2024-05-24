@@ -11,11 +11,12 @@ class IngredientSerializer(serializers.ModelSerializer):
             
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
-    ingredient = IngredientSerializer()
-    
+    ingredient = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+
     class Meta:
         model = RecipeIngredient
-        fields = ['ingredient', 'quantity']
+        fields = ['id', 'recipe', 'ingredient', 'quantity']
         
         
 class RecipeSerializer(serializers.ModelSerializer):
@@ -26,7 +27,8 @@ class RecipeSerializer(serializers.ModelSerializer):
     total_calories = serializers.ReadOnlyField()
     
     class Meta:
-        model = Recipefields = ['id', 'name', 'description', 'ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
+        model = Recipe
+        fields = ['id', 'name', 'description', 'ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
         
         
         
