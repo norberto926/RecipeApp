@@ -1,17 +1,17 @@
 from rest_framework import generics
 from .models import Recipe, Ingredient, RecipeIngredient
-from .serializers import RecipeSerializer, RecipeIngredientSerializer, IngredientSerializer
+from .serializers import RecipeDetailSerializer, RecipeListSerializer, RecipeIngredientSerializer, IngredientSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
 class RecipeList(generics.ListCreateAPIView):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_class = RecipeListSerializer
     
     
 class RecipeDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Recipe.objects.all()
-    serializer_class = RecipeSerializer
+    serializer_class = RecipeDetailSerializer
     
 class IngredientList(generics.ListCreateAPIView):
     queryset = Ingredient.objects.all()

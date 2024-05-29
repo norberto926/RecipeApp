@@ -8,19 +8,19 @@ class Recipe(models.Model):
     
     @property
     def total_protein(self):
-        return sum(ri.ingredient.protein * ri.quantity for ri in self.recipeingredient_set.all())/100
+        return sum(ri.ingredient.protein * ri.quantity for ri in self.recipe_ingredients.all())/100
 
     @property
     def total_carbohydrates(self):
-        return sum(ri.ingredient.carbohydrates * ri.quantity for ri in self.recipeingredient_set.all())/100
+        return sum(ri.ingredient.carbohydrates * ri.quantity for ri in self.recipe_ingredients.all())/100
 
     @property
     def total_fat(self):
-        return sum(ri.ingredient.fat * ri.quantity for ri in self.recipeingredient_set.all())/100
+        return sum(ri.ingredient.fat * ri.quantity for ri in self.recipe_ingredients.all())/100
 
     @property
     def total_calories(self):
-        return sum((ri.ingredient.protein * 4 + ri.ingredient.carbohydrates * 4 + ri.ingredient.fat * 9) * ri.quantity for ri in self.recipeingredient_set.all())/100
+        return sum((ri.ingredient.protein * 4 + ri.ingredient.carbohydrates * 4 + ri.ingredient.fat * 9) * ri.quantity for ri in self.recipe_ingredients.all())/100
 
     def __str__(self):
         return self.name
@@ -41,6 +41,6 @@ class Ingredient(models.Model):
 
 
 class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    recipe = models.ForeignKey(Recipe, related_name='recipe_ingredients', on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, related_name='ingredient_recipes', on_delete=models.CASCADE)
     quantity = models.IntegerField()

@@ -11,16 +11,18 @@ class IngredientSerializer(serializers.ModelSerializer):
             
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
-    ingredient = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
+    ingredient = IngredientSerializer(read_only=True)
+    ingredient_id = serializers.PrimaryKeyRelatedField(
+    queryset=Ingredient.objects.all(), source='ingredient', write_only=True)
     recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
 
     class Meta:
         model = RecipeIngredient
-        fields = ['id', 'recipe', 'ingredient', 'quantity']
+        fields = ['id', 'recipe', 'ingredient', 'ingredient_id', 'quantity']
         
         
-class RecipeSerializer(serializers.ModelSerializer):
-    ingredients = RecipeIngredientSerializer(source='recipeingredient_set', many=True, read_only=True)
+class RecipeDetailSerializer(serializers.ModelSerializer):
+    recipe_ingredients = RecipeIngredientSerializer(many=True, read_only=True)
     total_protein = serializers.ReadOnlyField()
     total_carbohydrates = serializers.ReadOnlyField()
     total_fat = serializers.ReadOnlyField()
@@ -28,7 +30,17 @@ class RecipeSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
+        fields = ['id', 'name', 'description', 'recipe_ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
+        
+class RecipeListSerializer(serializers.ModelSerializer):
+    total_protein = serializers.ReadOnlyField()
+    total_carbohydrates = serializers.ReadOnlyField()
+    total_fat = serializers.ReadOnlyField()
+    total_calories = serializers.ReadOnlyField()
+    
+    class Meta:
+        model = Recipe
+        fields = ['id', 'name', 'description', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
         
         
         
