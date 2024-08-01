@@ -1,24 +1,24 @@
 from rest_framework import serializers
 from .models import Recipe, Ingredient, RecipeIngredient
 
+
 class IngredientSerializer(serializers.ModelSerializer):
     
     calories = serializers.ReadOnlyField()
     
     class Meta:
             model = Ingredient
-            fields = ['id', 'name', 'protein', 'carbohydrates', 'fat', 'calories']
+            fields = ['id', 'name', 'protein', 'carbohydrates', 'fat', 'calories', 'photo']
             
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
-    ingredient = IngredientSerializer(read_only=True)
-    ingredient_id = serializers.PrimaryKeyRelatedField(
-    queryset=Ingredient.objects.all(), source='ingredient', write_only=True)
+    ingredient = serializers.PrimaryKeyRelatedField(queryset=Ingredient.objects.all())
     recipe = serializers.PrimaryKeyRelatedField(queryset=Recipe.objects.all())
+
 
     class Meta:
         model = RecipeIngredient
-        fields = ['id', 'recipe', 'ingredient', 'ingredient_id', 'quantity']
+        fields = ['id', 'recipe', 'ingredient', 'quantity']
         
         
 class RecipeDetailSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'recipe_ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
+        fields = ['id', 'name', 'description', 'recipe_ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo']
         
 class RecipeListSerializer(serializers.ModelSerializer):
     total_protein = serializers.ReadOnlyField()
@@ -40,7 +40,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories']
+        fields = ['id', 'name', 'description', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo']
         
         
         

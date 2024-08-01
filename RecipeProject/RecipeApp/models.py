@@ -5,6 +5,7 @@ from django.db import models
 class Recipe(models.Model):
     name = models.CharField(max_length=255)
     description = models.TextField()
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
     
     @property
     def total_protein(self):
@@ -31,6 +32,7 @@ class Ingredient(models.Model):
     protein = models.IntegerField()
     carbohydrates = models.IntegerField()
     fat = models.IntegerField()
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)
     
     def calories(self):
         return (self.protein * 4) + (self.carbohydrates * 4) + (self.fat * 9)
