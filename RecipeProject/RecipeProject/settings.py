@@ -83,9 +83,9 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-
+print(f"DATABASE_URL: {os.environ.get('DATABASE_URL')}")
 DATABASES = {
-    'default':  dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -120,6 +120,8 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+STATIC_URL = '/static/'
 
 
 # Static files (CSS, JavaScript, Images)
