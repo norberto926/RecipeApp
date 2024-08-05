@@ -88,16 +88,10 @@ WSGI_APPLICATION = 'RecipeProject.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-      'NAME': BASE_DIR / 'db.sqlite3',
- }
-}
 
-#DATABASES = {
-    #'default':  dj_database_url.parse(os.environ.get("DATABASE_URL"))
-#}
+DATABASES = {
+    'default':  dj_database_url.parse(os.environ.get("DATABASE_URL"))
+}
 
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -138,7 +132,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['']
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
