@@ -15,6 +15,7 @@ from pathlib import Path
 import dj_database_url
 
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -42,7 +43,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'RecipeApp', 
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'oauth2_provider',  # Django OAuth Toolkit
+    'django.contrib.sites',  # Required for Django Allauth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',  # Google provider for Allauth
 ]
 
 MIDDLEWARE = [
@@ -54,6 +61,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
+    'allauth.account.middleware.AccountMiddleware', 
 ]
 
 
@@ -151,3 +160,33 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
 MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/photos/'
 MEDIA_ROOT = 'photos/'
+
+SITE_ID = 1 
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+}
+
+OAUTH2_PROVIDER = {
+    'ACCESS_TOKEN_EXPIRE_SECONDS': 36000,
+    'REFRESH_TOKEN_EXPIRE_SECONDS': 864000,
+    'ALLOW_AUTHORIZATION_CODE_GRANT': True,
+}
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': ['profile', 'email'],
+        'AUTH_PARAMS': {'access_type': 'online'},
+        'APP': {
+            'client_id': os.environ.get('GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('GOOGLE_CLIENT_SECRET'),
+            'key': ''
+        }
+    }
+}
