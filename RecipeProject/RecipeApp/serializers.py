@@ -8,7 +8,7 @@ class IngredientSerializer(serializers.ModelSerializer):
     
     class Meta:
             model = Ingredient
-            fields = ['id', 'name', 'protein', 'carbohydrates', 'fat', 'calories', 'photo']
+            fields = ['id', 'name', 'protein', 'carbohydrates', 'fat', 'calories', 'photo', 'user']
             
 
 class RecipeIngredientSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class RecipeDetailSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'recipe_ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo']
+        fields = ['id', 'name', 'description', 'recipe_ingredients', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo', 'user']
         
 class RecipeListSerializer(serializers.ModelSerializer):
     total_protein = serializers.ReadOnlyField()
@@ -40,7 +40,7 @@ class RecipeListSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Recipe
-        fields = ['id', 'name', 'description', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo']
+        fields = ['id', 'name', 'description', 'total_protein', 'total_carbohydrates', 'total_fat', 'total_calories', 'photo', 'user']
         
         
         

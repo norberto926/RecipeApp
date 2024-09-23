@@ -1,11 +1,10 @@
 from django.db import models
-
-from django.contrib.auth.models import AbstractUser
-
+from users.models import NewUser
 
 # Create your models here.
 
 class Recipe(models.Model):
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE, default=6)
     name = models.CharField(max_length=255)
     description = models.TextField()
     photo = models.ImageField(upload_to='photos/', null=True, blank=True)
@@ -30,6 +29,7 @@ class Recipe(models.Model):
         return self.name
 
 class Ingredient(models.Model):
+    user = models.ForeignKey(NewUser, on_delete=models.CASCADE, default=6)
     name = models.CharField(max_length=255)
     recipes = models.ManyToManyField(Recipe, through='RecipeIngredient')
     protein = models.IntegerField()
